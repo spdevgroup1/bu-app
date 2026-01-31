@@ -41,35 +41,35 @@ const ClimbingMonkey = () => {
   // Calculate position based on animation progress
   const getTransform = () => {
     if (position < 0.3) {
-      // Climbing up the ladder (center)
+      // Climbing up the ladder (center) - starts at bottom (100%)
       const upProgress = position / 0.3;
       return {
-        x: '0%',
-        y: `${100 - upProgress * 100}%`,
+        left: '50%',
+        top: `${100 - upProgress * 100}%`,
         rotate: 0
       };
     } else if (position < 0.4) {
       // Moving across top
       const acrossProgress = (position - 0.3) / 0.1;
       return {
-        x: `${-acrossProgress * 600}%`,
-        y: '0%',
+        left: `${50 - acrossProgress * 300}%`,
+        top: '0%',
         rotate: -90
       };
     } else if (position < 0.8) {
       // Climbing down the left side
       const downProgress = (position - 0.4) / 0.4;
       return {
-        x: '-600%',
-        y: `${downProgress * 100}%`,
+        left: '-250%',
+        top: `${downProgress * 100}%`,
         rotate: 180
       };
     } else {
-      // Moving back to ladder start
+      // Moving back to ladder start at bottom
       const backProgress = (position - 0.8) / 0.2;
       return {
-        x: `${-600 + backProgress * 600}%`,
-        y: '100%',
+        left: `${-250 + backProgress * 300}%`,
+        top: '100%',
         rotate: 90
       };
     }
@@ -79,15 +79,11 @@ const ClimbingMonkey = () => {
 
   return (
     <motion.div
-      className="absolute text-6xl"
+      className="absolute text-6xl -translate-x-1/2 -translate-y-1/2"
       style={{
-        left: '50%',
-        top: '0%',
-        x: transform.x,
-        y: transform.y,
+        left: transform.left,
+        top: transform.top,
         rotate: transform.rotate,
-        transformOrigin: 'center',
-        marginLeft: '-1.5rem',
       }}
     >
       🐵
