@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,80 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Database } from "lucide-react";
+
+const ClimbingMonkey = () => {
+  const [position, setPosition] = useState(0);
+
+  useEffect(() => {
+    const duration = 12000; // 12 seconds for full cycle
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = (elapsed % duration) / duration;
+      setPosition(progress);
+      requestAnimationFrame(animate);
+    };
+
+    const animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  // Calculate position based on animation progress
+  const getTransform = () => {
+    if (position < 0.3) {
+      // Climbing up the ladder (right side)
+      const upProgress = position / 0.3;
+      return {
+        x: '120%',
+        y: `${100 - upProgress * 100}%`,
+        rotate: 0
+      };
+    } else if (position < 0.4) {
+      // Moving across top
+      const acrossProgress = (position - 0.3) / 0.1;
+      return {
+        x: `${120 - acrossProgress * 120}%`,
+        y: '0%',
+        rotate: -90
+      };
+    } else if (position < 0.8) {
+      // Climbing down the left side
+      const downProgress = (position - 0.4) / 0.4;
+      return {
+        x: '0%',
+        y: `${downProgress * 100}%`,
+        rotate: 180
+      };
+    } else {
+      // Moving back to ladder start
+      const backProgress = (position - 0.8) / 0.2;
+      return {
+        x: `${backProgress * 120}%`,
+        y: '100%',
+        rotate: 90
+      };
+    }
+  };
+
+  const transform = getTransform();
+
+  return (
+    <motion.div
+      className="absolute text-6xl"
+      style={{
+        left: '50%',
+        top: '50%',
+        x: transform.x,
+        y: transform.y,
+        rotate: transform.rotate,
+        transformOrigin: 'center',
+      }}
+    >
+      🐵
+    </motion.div>
+  );
+};
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -44,18 +118,42 @@ export default function Home() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative z-10 text-center"
       >
-        <motion.h1
-          initial={{ y: 20 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-[12rem] sm:text-[16rem] md:text-[20rem] lg:text-[28rem] font-black text-white tracking-tighter leading-none select-none"
-          style={{
-            textShadow: "0 20px 60px rgba(0,0,0,0.3)",
-            fontFamily: "Inter, system-ui, sans-serif"
-          }}
-        >
-          BU
-        </motion.h1>
+        <div className="relative inline-block">
+          <motion.h1
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-[12rem] sm:text-[16rem] md:text-[20rem] lg:text-[28rem] font-black text-white tracking-tighter leading-none select-none"
+            style={{
+              textShadow: "0 20px 60px rgba(0,0,0,0.3)",
+              fontFamily: "Inter, system-ui, sans-serif"
+            }}
+          >
+            BU
+          </motion.h1>
+          
+          {/* Ladder on the B */}
+          <div className="absolute left-[12%] top-[10%] bottom-[10%] w-[3%] pointer-events-none">
+            <div className="relative w-full h-full">
+              {/* Ladder sides */}
+              <div className="absolute left-0 top-0 bottom-0 w-[25%] bg-amber-900/80 rounded-full" />
+              <div className="absolute right-0 top-0 bottom-0 w-[25%] bg-amber-900/80 rounded-full" />
+              {/* Ladder rungs */}
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute left-0 right-0 h-[3%] bg-amber-800/80 rounded-full"
+                  style={{ top: `${i * 12.5 + 5}%` }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Climbing Monkey */}
+          <div className="absolute left-[12%] top-[10%] w-[3%] h-[80%] pointer-events-none">
+            <ClimbingMonkey />
+          </div>
+        </div>
         
         {/* Subtle underline accent */}
         <motion.div
