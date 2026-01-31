@@ -41,10 +41,10 @@ const ClimbingMonkey = () => {
   // Calculate position based on animation progress
   const getTransform = () => {
     if (position < 0.3) {
-      // Climbing up the ladder (right side)
+      // Climbing up the ladder (center)
       const upProgress = position / 0.3;
       return {
-        x: '120%',
+        x: '0%',
         y: `${100 - upProgress * 100}%`,
         rotate: 0
       };
@@ -52,7 +52,7 @@ const ClimbingMonkey = () => {
       // Moving across top
       const acrossProgress = (position - 0.3) / 0.1;
       return {
-        x: `${120 - acrossProgress * 120}%`,
+        x: `${-acrossProgress * 600}%`,
         y: '0%',
         rotate: -90
       };
@@ -60,7 +60,7 @@ const ClimbingMonkey = () => {
       // Climbing down the left side
       const downProgress = (position - 0.4) / 0.4;
       return {
-        x: '0%',
+        x: '-600%',
         y: `${downProgress * 100}%`,
         rotate: 180
       };
@@ -68,7 +68,7 @@ const ClimbingMonkey = () => {
       // Moving back to ladder start
       const backProgress = (position - 0.8) / 0.2;
       return {
-        x: `${backProgress * 120}%`,
+        x: `${-600 + backProgress * 600}%`,
         y: '100%',
         rotate: 90
       };
@@ -82,11 +82,12 @@ const ClimbingMonkey = () => {
       className="absolute text-6xl"
       style={{
         left: '50%',
-        top: '50%',
+        top: '0%',
         x: transform.x,
         y: transform.y,
         rotate: transform.rotate,
         transformOrigin: 'center',
+        marginLeft: '-1.5rem',
       }}
     >
       🐵
