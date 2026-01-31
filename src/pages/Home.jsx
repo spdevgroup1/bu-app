@@ -130,7 +130,7 @@ export default function Home() {
           </motion.h1>
           
           {/* Ladder on the B */}
-          <div className="absolute left-[12%] top-[10%] bottom-[10%] w-[3%] pointer-events-none">
+          <div className="absolute left-[12%] top-[15%] bottom-[15%] w-[3%] pointer-events-none">
             <div className="relative w-full h-full">
               {/* Ladder sides */}
               <div className="absolute left-0 top-0 bottom-0 w-[25%] bg-amber-900/80 rounded-full" />
@@ -147,7 +147,7 @@ export default function Home() {
           </div>
 
           {/* Climbing Monkey */}
-          <div className="absolute left-[12%] top-[10%] w-[3%] h-[80%] pointer-events-none">
+          <div className="absolute left-[12%] top-[15%] w-[3%] h-[70%] pointer-events-none">
             <ClimbingMonkey />
           </div>
         </div>
