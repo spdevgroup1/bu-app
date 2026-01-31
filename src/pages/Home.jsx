@@ -1,6 +1,33 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { base44 } from "@/api/base44Client";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Database } from "lucide-react";
 
 export default function Home() {
+  const [open, setOpen] = useState(false);
+
+  const { data: contacts, isLoading } = useQuery({
+    queryKey: ['contacts'],
+    queryFn: () => base44.entities.Contact.list(),
+    initialData: [],
+  });
   return (
     <div className="min-h-screen bg-blue-700 flex items-center justify-center relative overflow-hidden">
       {/* Subtle gradient overlay */}
@@ -38,6 +65,53 @@ export default function Home() {
           className="h-2 bg-white/30 rounded-full mx-auto mt-4"
           style={{ width: "40%" }}
         />
+
+        {/* Database Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="mt-12"
+        >
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button 
+                size="lg"
+                className="bg-white text-blue-700 hover:bg-blue-50 font-semibold px-8 py-6 text-lg shadow-2xl"
+              >
+                <Database className="w-5 h-5 mr-2" />
+                View Contacts
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="text-2xl">Contact Database</DialogTitle>
+              </DialogHeader>
+              <div className="mt-4">
+                {isLoading ? (
+                  <div className="text-center py-8 text-gray-500">Loading...</div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Email</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {contacts.map((contact) => (
+                        <TableRow key={contact.id}>
+                          <TableCell className="font-medium">{contact.name}</TableCell>
+                          <TableCell>{contact.email}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
+        </motion.div>
       </motion.div>
     </div>
   );
