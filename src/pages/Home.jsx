@@ -183,9 +183,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Climbing Monkey */}
+          {/* Three Monkeys */}
           <div className="absolute left-[12%] top-[15%] w-[9%] h-[70%] pointer-events-none">
-            <ClimbingMonkey />
+            <Monkey delay={0} />
+            <Monkey delay={0.1} />
+            <Monkey delay={0.2} />
           </div>
         </div>
         
