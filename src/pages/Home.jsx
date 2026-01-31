@@ -20,57 +20,91 @@ import {
 } from "@/components/ui/table";
 import { Database } from "lucide-react";
 
-const ClimbingMonkey = () => {
+const Monkey = ({ delay }) => {
   const [position, setPosition] = useState(0);
 
   useEffect(() => {
-    const duration = 12000; // 12 seconds for full cycle
+    const duration = 20000;
     const startTime = Date.now();
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
-      const progress = (elapsed % duration) / duration;
+      const rawProgress = (elapsed % duration) / duration;
+      // Apply delay to each monkey
+      const progress = Math.max(0, rawProgress - delay);
       setPosition(progress);
       requestAnimationFrame(animate);
     };
 
     const animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
-  }, []);
+  }, [delay]);
 
-  // Calculate position based on animation progress
   const getTransform = () => {
-    if (position < 0.3) {
-      // Climbing up the ladder (center) - starts at bottom (100%)
-      const upProgress = position / 0.3;
+    // Phase 1: Climbing up the ladder (0 - 0.2)
+    if (position < 0.2) {
+      const climbProgress = position / 0.2;
       return {
-        left: '50%',
-        top: `${100 - upProgress * 100}%`,
-        rotate: 0
+        x: '50%',
+        y: `${100 - climbProgress * 100}%`,
+        rotate: 0,
+        opacity: 1
       };
-    } else if (position < 0.4) {
-      // Moving across top
-      const acrossProgress = (position - 0.3) / 0.1;
+    }
+    // Phase 2: Wait at top for other monkeys (0.2 - 0.5)
+    else if (position < 0.5) {
       return {
-        left: `${50 - acrossProgress * 300}%`,
-        top: '0%',
-        rotate: -90
+        x: '50%',
+        y: '0%',
+        rotate: 0,
+        opacity: 1
       };
-    } else if (position < 0.8) {
-      // Climbing down the left side
-      const downProgress = (position - 0.4) / 0.4;
+    }
+    // Phase 3: Line up side by side (0.5 - 0.55)
+    else if (position < 0.55) {
+      const lineUpProgress = (position - 0.5) / 0.05;
+      const monkeyIndex = delay * 10; // 0, 1, 2
+      const spacing = monkeyIndex * 150;
       return {
-        left: '-250%',
-        top: `${downProgress * 100}%`,
-        rotate: 180
+        x: `${50 + spacing * lineUpProgress}%`,
+        y: '0%',
+        rotate: 90,
+        opacity: 1
       };
-    } else {
-      // Moving back to ladder start at bottom
-      const backProgress = (position - 0.8) / 0.2;
+    }
+    // Phase 4: Walk right together toward U (0.55 - 0.75)
+    else if (position < 0.75) {
+      const walkProgress = (position - 0.55) / 0.2;
+      const monkeyIndex = delay * 10;
+      const spacing = monkeyIndex * 150;
       return {
-        left: `${-250 + backProgress * 300}%`,
-        top: '100%',
-        rotate: 90
+        x: `${50 + spacing + walkProgress * 800}%`,
+        y: '0%',
+        rotate: 90,
+        opacity: 1
+      };
+    }
+    // Phase 5: Fall into U gap (0.75 - 0.85)
+    else if (position < 0.85) {
+      const fallProgress = (position - 0.75) / 0.1;
+      const monkeyIndex = delay * 10;
+      const spacing = monkeyIndex * 150;
+      return {
+        x: `${850 + spacing}%`,
+        y: `${fallProgress * 50}%`,
+        rotate: 180,
+        opacity: 1
+      };
+    }
+    // Phase 6: Stacked in U gap
+    else {
+      const monkeyIndex = delay * 10;
+      const stackPosition = monkeyIndex * 80; // Stack vertically
+      return {
+        x: `${850 + 75}%`,
+        y: `${50 + stackPosition}%`,
+        rotate: 0,
+        opacity: 1
       };
     }
   };
@@ -81,9 +115,12 @@ const ClimbingMonkey = () => {
     <motion.div
       className="absolute text-6xl -translate-x-1/2 -translate-y-1/2"
       style={{
-        left: transform.left,
-        top: transform.top,
+        left: '0%',
+        top: '0%',
+        x: transform.x,
+        y: transform.y,
         rotate: transform.rotate,
+        opacity: transform.opacity
       }}
     >
       🐵
