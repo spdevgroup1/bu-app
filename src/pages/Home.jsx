@@ -251,7 +251,15 @@ export default function Home() {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900" />
 
         {/* Twilight Stars */}
-        <Stars />
+        <Stars settings={settings} isPaused={isPaused} />
+
+        {/* Settings Panel */}
+        <StarsSettings
+          settings={settings}
+          onSettingsChange={setSettings}
+          isPaused={isPaused}
+          onPausedChange={setIsPaused}
+        />
 
         {/* Decorative circles */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
