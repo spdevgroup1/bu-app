@@ -47,6 +47,7 @@ const Birds = () => {
           style={{
             left: `${position * 100 + (i * -15)}%`,
             top: `${Math.sin(position * Math.PI * 2 + i) * 20}px`,
+            transform: "scaleX(-1)",
           }}
         >
           🐦
