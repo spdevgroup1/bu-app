@@ -11,7 +11,7 @@ const Stars = () => {
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = (elapsed % duration) / duration;
-      setPosition(progress * 30); // Move 30% to the right over 120 seconds
+      setPosition(progress * 100); // Move 100% to the right over 120 seconds (2 minutes)
       requestAnimationFrame(animate);
     };
 
