@@ -195,7 +195,7 @@ export default function Home() {
               fontFamily: "Inter, system-ui, sans-serif"
             }}
           >
-            BU
+            BUBU
           </motion.h1>
           
           {/* Ladder on the B */}
