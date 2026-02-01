@@ -108,6 +108,37 @@ const Monkey = ({ delay }) => {
     return () => cancelAnimationFrame(animationId);
   }, [delay]);
 
+  // First monkey (delay=0) makes a sound every 15 seconds
+  useEffect(() => {
+    if (delay !== 0) return;
+
+    const playMonkeySound = () => {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioContext.currentTime;
+      
+      // Create a monkey-like sound with varying frequencies
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      
+      // Start with a high pitch and drop
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.exponentialRampToValueAtTime(400, now + 0.2);
+      osc.frequency.exponentialRampToValueAtTime(600, now + 0.4);
+      
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0, now + 0.5);
+      
+      osc.start(now);
+      osc.stop(now + 0.5);
+    };
+
+    const interval = setInterval(playMonkeySound, 15000);
+    return () => clearInterval(interval);
+  }, [delay]);
+
   const getTransform = () => {
     // Phase 1: Climbing up the ladder (0 - 0.2)
     if (position < 0.2) {
