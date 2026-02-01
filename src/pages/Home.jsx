@@ -232,6 +232,13 @@ const Monkey = ({ delay }) => {
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [settings, setSettings] = useState({
+    count: 1,
+    duration: 120,
+    color: "white",
+    density: 50,
+  });
 
   const { data: contacts, isLoading } = useQuery({
     queryKey: ['contacts'],
