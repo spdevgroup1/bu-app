@@ -129,7 +129,7 @@ const Monkey = ({ delay }) => {
       osc.frequency.exponentialRampToValueAtTime(600, now + 0.4);
       
       gain.gain.setValueAtTime(0.2, now);
-      gain.gain.exponentialRampToValueAtTime(0, now + 0.5);
+      gain.gain.linearRampToValueAtTime(0.001, now + 0.5);
       
       osc.start(now);
       osc.stop(now + 0.5);
