@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import Stars from "@/components/Stars";
+import StarsSettings from "@/components/StarsSettings";
 import {
   Dialog,
   DialogContent,
