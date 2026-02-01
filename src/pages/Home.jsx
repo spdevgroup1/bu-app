@@ -223,6 +223,11 @@ export default function Home() {
           </div>
         </div>
         
+        {/* Prowling Cat */}
+        <div className="absolute inset-x-0 pointer-events-none">
+          <Cat />
+        </div>
+        
         {/* Subtle underline accent */}
         <motion.div
           initial={{ scaleX: 0 }}
