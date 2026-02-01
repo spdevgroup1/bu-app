@@ -20,15 +20,15 @@ const Stars = () => {
   }, []);
 
   // Generate stars scattered across top half of screen
-  const stars = Array.from({ length: 80 }, (_, i) => {
+  const stars = Array.from({ length: 45 }, (_, i) => {
     const rand1 = Math.random();
     const rand2 = Math.random();
     
     // Scatter evenly across full width
     const x = rand1 * 100;
     
-    // 80% of stars in top half (0-50% vertically)
-    const y = rand2 < 0.8 ? Math.random() * 50 : 50 + Math.random() * 50;
+    // All stars distributed across top 50% of screen
+    const y = rand2 * 50;
     
     const delay = Math.random() * 2;
     const duration = 2 + Math.random() * 1.5;
