@@ -233,12 +233,36 @@ const Monkey = ({ delay }) => {
 export default function Home() {
   const [open, setOpen] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [currentLetter, setCurrentLetter] = useState("B");
+  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
   const [settings, setSettings] = useState({
     count: 1,
     duration: 120,
     color: "white",
     density: 50,
   });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentLetter((prev) => {
+        const letters = ["B", "C", "D", "E", "F", "G", "H"];
+        const currentIndex = letters.indexOf(prev);
+        const newIndex = currentIndex + direction;
+
+        if (newIndex >= letters.length - 1) {
+          setDirection(-1);
+          return letters[letters.length - 2];
+        } else if (newIndex <= 0) {
+          setDirection(1);
+          return letters[1];
+        }
+
+        return letters[newIndex];
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [direction]);
 
   const { data: contacts, isLoading } = useQuery({
     queryKey: ['contacts'],
