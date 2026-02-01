@@ -5,13 +5,13 @@ const Stars = () => {
   const [position, setPosition] = useState(0);
 
   useEffect(() => {
-    const duration = 30000; // 30 seconds for full cycle
+    const duration = 120000; // 120 seconds for full cycle (much slower)
     const startTime = Date.now();
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = (elapsed % duration) / duration;
-      setPosition(progress * 50); // Move 50% to the right
+      setPosition(progress * 30); // Move 30% to the right over 120 seconds
       requestAnimationFrame(animate);
     };
 
@@ -19,27 +19,16 @@ const Stars = () => {
     return () => cancelAnimationFrame(animationId);
   }, []);
 
-  // Generate stars with concentration in center and top
+  // Generate stars scattered across top half of screen
   const stars = Array.from({ length: 80 }, (_, i) => {
-    let x, y;
-    
-    // Bias towards center horizontally and top vertically
     const rand1 = Math.random();
     const rand2 = Math.random();
     
-    // 70% of stars in center (30-70% horizontally)
-    if (rand1 < 0.7) {
-      x = 30 + Math.random() * 40;
-    } else {
-      x = Math.random() * 100;
-    }
+    // Scatter evenly across full width
+    const x = rand1 * 100;
     
     // 80% of stars in top half (0-50% vertically)
-    if (rand2 < 0.8) {
-      y = Math.random() * 50;
-    } else {
-      y = 50 + Math.random() * 50;
-    }
+    const y = rand2 < 0.8 ? Math.random() * 50 : 50 + Math.random() * 50;
     
     const delay = Math.random() * 2;
     const duration = 2 + Math.random() * 1.5;
