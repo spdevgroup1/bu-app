@@ -22,7 +22,6 @@ import { Database } from "lucide-react";
 
 const Birds = () => {
   const [position, setPosition] = useState(0);
-  const audioRef = useRef(null);
 
   useEffect(() => {
     const duration = 6000;
@@ -37,34 +36,6 @@ const Birds = () => {
 
     const animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
-  }, []);
-
-  useEffect(() => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    
-    const playChirp = (startTime) => {
-      const now = audioContext.currentTime;
-      const osc = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      
-      osc.connect(gain);
-      gain.connect(audioContext.destination);
-      
-      osc.frequency.setValueAtTime(2000, now);
-      osc.frequency.exponentialRampToValueAtTime(1000, now + 0.1);
-      
-      gain.gain.setValueAtTime(0.1, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-      
-      osc.start(now);
-      osc.stop(now + 0.1);
-    };
-
-    const interval = setInterval(() => {
-      playChirp(audioContext.currentTime);
-    }, 300);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
