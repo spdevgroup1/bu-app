@@ -20,6 +20,71 @@ import {
 } from "@/components/ui/table";
 import { Database } from "lucide-react";
 
+const Birds = () => {
+  const [position, setPosition] = useState(0);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const duration = 6000;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = (elapsed % duration) / duration;
+      setPosition(progress);
+      requestAnimationFrame(animate);
+    };
+
+    const animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  useEffect(() => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    const playChirp = (startTime) => {
+      const now = audioContext.currentTime;
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      
+      osc.frequency.setValueAtTime(2000, now);
+      osc.frequency.exponentialRampToValueAtTime(1000, now + 0.1);
+      
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+      
+      osc.start(now);
+      osc.stop(now + 0.1);
+    };
+
+    const interval = setInterval(() => {
+      playChirp(audioContext.currentTime);
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="absolute inset-x-0 -top-20 pointer-events-none">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <motion.div
+          key={i}
+          className="absolute text-3xl"
+          style={{
+            left: `${position * 100 + (i * -15)}%`,
+            top: `${Math.sin(position * Math.PI * 2 + i) * 20}px`,
+          }}
+        >
+          🐦
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 const Cat = () => {
   const [position, setPosition] = useState(0);
 
