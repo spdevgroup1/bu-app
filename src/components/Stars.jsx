@@ -40,7 +40,7 @@ const Stars = () => {
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       <motion.div
         style={{ x: `${position}%`, width: "100%", height: "100%" }}
-        transition={{ type: "tween", duration: 0 }}
+        transition={{ type: "linear", duration: 120, repeat: Infinity }}
       >
         {stars.map((star) => (
           <motion.div
