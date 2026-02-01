@@ -49,10 +49,15 @@ const Stars = ({ settings, isPaused }) => {
               left: `${star.x}%`,
               top: `${star.y}%`,
               fontSize: "1.25rem",
+              color: settings.color === "white" ? "white" : 
+                     settings.color === "yellow" ? "#FBBF24" :
+                     settings.color === "cyan" ? "#06B6D4" :
+                     settings.color === "purple" ? "#A78BFA" :
+                     "#EC4899"
             }}
             animate={{ opacity: 0.7 }}
             transition={{ duration: 0 }}
-          >
+            >
             ✨
           </motion.div>
         ))}
