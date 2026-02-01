@@ -20,6 +20,38 @@ import {
 } from "@/components/ui/table";
 import { Database } from "lucide-react";
 
+const Cat = () => {
+  const [position, setPosition] = useState(0);
+
+  useEffect(() => {
+    const duration = 8000;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = (elapsed % duration) / duration;
+      setPosition(progress);
+      requestAnimationFrame(animate);
+    };
+
+    const animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  return (
+    <motion.div
+      className="absolute text-8xl top-8"
+      style={{
+        left: `${position * 90}%`,
+      }}
+      animate={{ scaleX: position > 0.5 ? -1 : 1 }}
+      transition={{ type: "tween" }}
+    >
+      🐱
+    </motion.div>
+  );
+};
+
 const Monkey = ({ delay }) => {
   const [position, setPosition] = useState(0);
 
