@@ -288,6 +288,9 @@ export default function Home() {
           </div>
         </div>
         
+        {/* Flock of Birds */}
+        <Birds />
+        
         {/* Prowling Cat */}
         <div className="absolute inset-x-0 pointer-events-none">
           <Cat />
