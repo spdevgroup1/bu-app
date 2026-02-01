@@ -249,9 +249,9 @@ export default function Home() {
         const currentIndex = letters.indexOf(prev);
         const newIndex = currentIndex + direction;
 
-        if (newIndex >= letters.length - 1) {
+        if (newIndex >= letters.length) {
           setDirection(-1);
-          return letters[letters.length - 2];
+          return letters[letters.length - 1];
         } else if (newIndex <= 0) {
           setDirection(1);
           return letters[1];
