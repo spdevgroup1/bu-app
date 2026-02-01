@@ -51,13 +51,8 @@ const Stars = () => {
               top: `${star.y}%`,
               fontSize: "1.25rem",
             }}
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{
-              duration: star.duration,
-              repeat: Infinity,
-              delay: star.delay,
-              ease: "easeInOut",
-            }}
+            animate={{ opacity: 0.7 }}
+            transition={{ duration: 0 }}
           >
             ✨
           </motion.div>
