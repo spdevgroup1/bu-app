@@ -20,7 +20,7 @@ const Stars = () => {
   }, []);
 
   // Generate stars scattered across top half of screen
-  const stars = Array.from({ length: 45 }, (_, i) => {
+  const stars = Array.from({ length: 1 }, (_, i) => {
     const rand1 = Math.random();
     const rand2 = Math.random();
     
