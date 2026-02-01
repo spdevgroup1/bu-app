@@ -1,39 +1,38 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
-const Stars = () => {
+const Stars = ({ settings, isPaused }) => {
   const [position, setPosition] = useState(0);
 
   useEffect(() => {
-    const duration = 120000; // 120 seconds for full cycle (much slower)
+    if (isPaused) return;
+
+    const duration = settings.duration * 1000;
     const startTime = Date.now();
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = (elapsed % duration) / duration;
-      setPosition(progress * 100); // Move 100% to the right over 120 seconds (2 minutes)
+      setPosition(progress * 100);
       requestAnimationFrame(animate);
     };
 
     const animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
-  }, []);
+  }, [settings.duration, isPaused]);
 
   // Generate stars scattered across top half of screen
-  const stars = Array.from({ length: 1 }, (_, i) => {
+  const stars = Array.from({ length: settings.count }, (_, i) => {
     const rand1 = Math.random();
     const rand2 = Math.random();
     
     // Scatter evenly across full width
     const x = rand1 * 100;
     
-    // All stars distributed across top 50% of screen
-    const y = rand2 * 50;
+    // All stars distributed across top density% of screen
+    const y = (rand2 * settings.density) / 100 * 100;
     
-    const delay = Math.random() * 2;
-    const duration = 2 + Math.random() * 1.5;
-    
-    return { x, y, delay, duration, id: i };
+    return { x, y, id: i };
   });
 
   return (
