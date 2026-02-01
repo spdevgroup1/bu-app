@@ -49,7 +49,7 @@ const Stars = () => {
             style={{
               left: `${star.x}%`,
               top: `${star.y}%`,
-              fontSize: "0.75rem",
+              fontSize: "1.25rem",
             }}
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{
