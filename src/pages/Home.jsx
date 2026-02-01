@@ -306,9 +306,9 @@ export default function Home() {
               textShadow: "0 20px 60px rgba(0,0,0,0.3)",
               fontFamily: "Inter, system-ui, sans-serif"
             }}
-          >
-            BUBU
-          </motion.h1>
+            >
+            {currentLetter}UBU
+            </motion.h1>
           
           {/* Ladder on the B */}
           <div className="absolute left-[12%] top-[15%] bottom-[15%] w-[9%] pointer-events-none">
